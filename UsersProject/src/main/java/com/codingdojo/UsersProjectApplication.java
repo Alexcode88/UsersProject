@@ -1,6 +1,9 @@
 package com.codingdojo;
 
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
+
 import com.codingdojo.models.User;
 
 import org.springframework.boot.SpringApplication;
@@ -11,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @SpringBootApplication
@@ -75,6 +77,55 @@ public class UsersProjectApplication {
 			userList.add( new User( userFirstName, userLastName, userIdentifier ));
 			return "redirect:/users";
 		}
+	}
+	
+	@RequestMapping( value = "/login", method = RequestMethod.GET )
+	public String login() {
+		return "login.jsp";
+	}
+	
+	@RequestMapping( value = "/validateUser", method = RequestMethod.POST )
+	public String validateUser(@RequestParam( value = "userFirstName" ) String userFirstName, 
+			   				   @RequestParam( value = "userLastName" ) String userLastName,
+			   				   HttpSession session,
+			   				   RedirectAttributes redirectAttributes) {
+		
+		for( int i = 0; i < userList.size(); i ++ ) {
+			if( userList.get(i).getFirstName().equals( userFirstName) && 
+				userList.get(i).getLastName().equals( userLastName ) ) {
+					session.setAttribute("fullName", userFirstName + " " + userLastName );
+					session.setAttribute("identifier", userList.get(i).getIdentifier() );
+					return "home.jsp";
+			}
+		}
+		
+		redirectAttributes.addFlashAttribute( "errorMessage", "Wrong credentials provided" );
+		return "redirect:/login";
+	}
+	
+	@RequestMapping( value = "/home", method = RequestMethod.GET )
+	public String home( HttpSession session, RedirectAttributes redirectAttributes, Model model ) {
+		String fullName = (String) session.getAttribute( "fullName" );
+		Integer identifier = (Integer) session.getAttribute( "identifier" ); 
+		
+		if( fullName != null && identifier != null ) {
+			model.addAttribute( "fullName", fullName );
+			model.addAttribute( "identifier", identifier );
+			return "home.jsp";
+		}
+		else {
+			redirectAttributes.addFlashAttribute( "errorMessage", "You need to login in order to get to the home" );
+			return "redirect:/login";
+		}	
+	}
+	
+	@RequestMapping( value = "/logout", method = RequestMethod.POST )
+	public String logout( HttpSession session ) {
+		
+		session.removeAttribute( "fullName" );
+		session.removeAttribute( "identifier" );
+		
+		return "/login.jsp";
 	}
 }
 
