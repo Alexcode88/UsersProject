@@ -30,13 +30,16 @@
 					<input type="password" id="password" name="password" />
 				</div>
 				<div>
-					<label for="passwordConfirmation"> Password: </label>
+					<label for="passwordConfirmation"> Password confirmation: </label>
 					<input type="password" id="passwordConfirmation" name="passwordConfirmation" />
 				</div>
 				<div>
 					<button type="submit">
 						Register
 					</button>
+				</div>
+				<div class="errorMessage">
+					<c:out value="${errorMessage}"></c:out>
 				</div>
 			</fieldset>
 		</form>
@@ -51,12 +54,15 @@
 				</div>
 				<div>
 					<label for="userPassword"> Password: </label>
-					<input type="text" id="userPassword" name="userPassword" />
+					<input type="password" id="userPassword" name="userPassword" />
 				</div>
 				<div>
 					<button type="submit">
 						Login
 					</button>
+				</div>
+				<div>
+					<c:out value="${loginErrorMessage}"></c:out>
 				</div>
 			</fieldset>
 		</form>
