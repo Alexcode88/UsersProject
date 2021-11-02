@@ -4,25 +4,61 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
-		<link rel="stylesheet" href="./css/index.css"/>
+		<title>Login and registration</title>
+		<link rel="stylesheet" href="/css/index.css"/>
 	</head>
 	<body>
-		<h1>
-			Hello there from the JSP file!
-		</h1>
-		<h2>
-			Welcome back <c:out value="${firstName}"></c:out>!
-		</h2>
-		<ul>
-			<c:forEach var="user" items="${userList}">
-			<li>
-				<c:out value="${user.getFirstName()}"></c:out>
-				<c:out value="${user.getLastName()}"></c:out>
-				<c:out value="${user.getIdentifier()}"></c:out>
-			</li>
-			</c:forEach>
-		</ul>
+		<form method="POST" action="/registerUser">
+			<fieldset>
+				<legend>
+					Register a new user
+				</legend>
+				<div>
+					<label for="email"> Email: </label>
+					<input type="text" id="email" name="email" />
+				</div>
+				<div>
+					<label for="firstname"> First name: </label>
+					<input type="text" id="firstname" name="firstname" />
+				</div>
+				<div>
+					<label for="lastname"> Last name: </label>
+					<input type="text" id="lastname" name="lastname" />
+				</div>
+				<div>
+					<label for="password"> Password: </label>
+					<input type="password" id="password" name="password" />
+				</div>
+				<div>
+					<label for="passwordConfirmation"> Password: </label>
+					<input type="password" id="passwordConfirmation" name="passwordConfirmation" />
+				</div>
+				<div>
+					<button type="submit">
+						Register
+					</button>
+				</div>
+			</fieldset>
+		</form>
+		<form method="POST" action="/validateUser">
+			<fieldset>
+				<legend>
+					Login
+				</legend>
+				<div>
+					<label for="userEmail"> Email: </label>
+					<input type="text" id="userEmail" name="userEmail" />
+				</div>
+				<div>
+					<label for="userPassword"> Password: </label>
+					<input type="text" id="userPassword" name="userPassword" />
+				</div>
+				<div>
+					<button type="submit">
+						Login
+					</button>
+				</div>
+			</fieldset>
+		</form>
 	</body>
 </html>
-
